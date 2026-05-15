@@ -1,0 +1,7 @@
+streamlit
+ollama
+SpeechRecognition
+sounddevice
+geocoder
+requests
+streamlit-js-eval
