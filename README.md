@@ -71,3 +71,16 @@ Safepath_AI/
 │   ├── 4_Safety_Tips.py
 │   ├── 5_Smart_Voice_SOS.py
 │   └── 6_About.py
+```
+
+---
+
+# Output
+![Alt Text](./assets/1.png)
+![Alt Text](./assets/2.png)
+![Alt Text](./assets/3.png)
+![Alt Text](./assets/4.png)
+![Alt Text](./assets/5.png)
+![Alt Text](./assets/6.png)
+![Alt Text](./assets/7.png)
+
