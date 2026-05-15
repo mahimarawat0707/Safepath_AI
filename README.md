@@ -76,6 +76,8 @@ Safepath_AI/
 ---
 
 # Output
+
+## Light Mode
 ![Alt Text](./assets/1.png)
 ![Alt Text](./assets/2.png)
 ![Alt Text](./assets/3.png)
@@ -83,4 +85,7 @@ Safepath_AI/
 ![Alt Text](./assets/5.png)
 ![Alt Text](./assets/6.png)
 ![Alt Text](./assets/7.png)
+
+## Dark Mode
+![Alt Text](./assets/8.png)
 
