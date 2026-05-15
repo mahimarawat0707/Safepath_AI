@@ -1,6 +1,8 @@
 import streamlit as st
 import speech_recognition as sr
 import time
+import json
+import os
 
 # PAGE CONFIG
 st.set_page_config(
@@ -24,6 +26,7 @@ if not dark_mode:
     shadow = "rgba(255,105,180,0.2)"
     input_bg = "#ffffff"
     sidebar = "#ffd6e7"
+    keyword_color = "black"
 
 # DARK MODE
 else:
@@ -37,6 +40,7 @@ else:
     shadow = "rgba(255,255,255,0.1)"
     input_bg = "#2b2b2b"
     sidebar = "#1a1a1a"
+    keyword_color = "white"
 
 # CSS
 st.markdown(f"""
@@ -104,6 +108,7 @@ section[data-testid="stSidebar"] * {{
     font-size: 18px;
     font-weight: bold;
     transition: 0.3s;
+    width: 100%;
 }}
 
 .stButton > button:hover {{
@@ -159,13 +164,52 @@ section[data-testid="stSidebar"] * {{
     margin-top: 20px;
 }}
 
-/* SUCCESS / WARNING / INFO TEXT */
+/* ALERT TEXT */
 .stSuccess, .stWarning, .stInfo, .stError {{
     color: {"black" if not dark_mode else "white"} !important;
 }}
 
 .stSuccess *, .stWarning *, .stInfo *, .stError * {{
     color: {"black" if not dark_mode else "white"} !important;
+}}
+
+/* TEXTAREA LABEL */
+.stTextArea label {{
+    color: {keyword_color} !important;
+    font-weight: bold !important;
+    font-size: 18px !important;
+}}
+
+/* TEXTAREA */
+.stTextArea textarea {{
+    background-color: {input_bg} !important;
+    color: {keyword_color} !important;
+    border-radius: 15px !important;
+    border: 2px solid {"#000000" if not dark_mode else "#555555"} !important;
+    font-size: 17px !important;
+    padding: 15px !important;
+}}
+
+/* SECRET TITLES */
+.secret-heading {{
+    color: {keyword_color};
+    font-size: 40px;
+    font-weight: bold;
+    margin-top: 30px;
+}}
+
+.secret-sub {{
+    color: {keyword_color};
+    font-size: 18px;
+    margin-bottom: 10px;
+}}
+
+/* KEYWORDS */
+.keyword-text {{
+    color: {keyword_color};
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
 }}
 
 </style>
@@ -198,16 +242,77 @@ SafePath AI continuously listens for emergency keywords.
 </div>
 """, unsafe_allow_html=True)
 
-# KEYWORDS
+# KEYWORDS FILE
+KEYWORDS_FILE = "keywords.json"
+
+# LOAD SAVED KEYWORDS
+if os.path.exists(KEYWORDS_FILE):
+
+    with open(KEYWORDS_FILE, "r") as file:
+        saved_keywords = json.load(file)
+
+else:
+
+    saved_keywords = []
+
+# SECRET TITLE
+st.markdown(f"""
+<div class="secret-heading">
+🔐 Secret Emergency Keywords
+</div>
+
+<div class="secret-sub">
+Enter your secret emergency words (comma separated)
+</div>
+""", unsafe_allow_html=True)
+
+# INPUT
+custom_words = st.text_area(
+    "",
+    value=", ".join(saved_keywords),
+    placeholder="example: call mom, red notebook, pineapple"
+)
+
+# SAVE BUTTON
+if st.button("💾 Save Secret Keywords"):
+
+    saved_keywords = [
+        word.strip().lower()
+        for word in custom_words.split(",")
+        if word.strip()
+    ]
+
+    with open(KEYWORDS_FILE, "w") as file:
+
+        json.dump(saved_keywords, file)
+
+    st.success("✅ Secret keywords saved successfully")
+
+# DEFAULT WORDS
 keywords = [
     "help",
     "danger",
     "save me",
-    "emergency",
-    "police",
-    "stop",
-    "please help"
+    "emergency"
 ]
+
+# ADD SAVED WORDS
+keywords.extend(saved_keywords)
+
+# ACTIVE TITLE
+st.markdown(f"""
+<div class="secret-heading" style="font-size:35px;">
+✅ Active Emergency Keywords
+</div>
+""", unsafe_allow_html=True)
+
+# SHOW WORDS
+for word in keywords:
+
+    st.markdown(
+        f'<div class="keyword-text">• {word}</div>',
+        unsafe_allow_html=True
+    )
 
 # SESSION STATE
 if "listening" not in st.session_state:
