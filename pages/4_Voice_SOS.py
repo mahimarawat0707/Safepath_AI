@@ -226,22 +226,6 @@ AI-powered voice emergency detection system
 </div>
 """, unsafe_allow_html=True)
 
-# INFO CARD
-st.markdown(f"""
-<div class="info-card">
-
-SafePath AI continuously listens for emergency keywords.
-
-<br><br>
-
-🚨 SOS activates automatically  
-📞 Emergency contacts alerted  
-🚔 Nearby police station alerted  
-📍 Live location shared instantly  
-
-</div>
-""", unsafe_allow_html=True)
-
 # KEYWORDS FILE
 KEYWORDS_FILE = "keywords.json"
 
